@@ -1,0 +1,26 @@
+{
+  "name": "Odoo-Dev",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "features": {},
+  //   "remoteUser": "vscode"
+  "postCreateCommand": "sh /repo/scripts/postcreate.sh",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true
+      },
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+		"streetsidesoftware.code-spell-checker",
+		"ms-python.python",
+		"GitHub.copilot",
+		"elagil.pre-commit-helper",
+		"mhutchie.git-graph"
+	]
+    }
+  }
+}

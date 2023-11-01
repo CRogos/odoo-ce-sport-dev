@@ -1,0 +1,59 @@
+version: '3'
+services:
+  dev:
+    build: dev
+    volumes:
+      - odoo-dev-code:/workspace
+      - odoo-dev-cache:/home/vscode/.cache
+      - ..:/repo
+      - ~/.ssh:/home/vscode/.ssh
+    environment:
+      - db_host=mydb
+      - db_password=myodoo
+      - db_user=odoo
+    command: /bin/sh -c "while sleep 1000; do :; done"  
+    ports:
+      - "8069:8069"
+    
+  web:
+    build: web
+    depends_on:
+      - mydb
+      - dev
+    # Runs app on the same network as the service container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:dev
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./web/config:/etc/odoo
+      - odoo-dev-code:/src
+    environment:
+      - db_host=mydb
+      - db_password=myodoo
+      - db_user=odoo
+  mydb:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+
+  dbadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - mydb
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+    ports:
+      - "8068:80" 
+    logging:
+      driver: none
+
+volumes:
+  odoo-dev-code:
+  odoo-dev-cache:
+  odoo-web-data:
+  odoo-db-data:

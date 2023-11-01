@@ -1,0 +1,26 @@
+{
+
+    "configurations": [
+        {
+            "name": "Python: Debugpy",
+            "type": "python",
+            "request": "attach",
+            "port": 8069,
+            "debugServer": 8888,
+            "host": "web",   
+            "justMyCode": false,       
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/odoo/",
+                    "remoteRoot":"/src/odoo/",
+                },
+                {
+                    "localRoot": "${workspaceFolder}/user",
+                    "remoteRoot":"/src/user",
+                },
+            ],
+            "stopOnEntry": false,
+            "logToFile": true,
+        }
+    ]
+}
